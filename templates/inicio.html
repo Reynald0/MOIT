@@ -1,0 +1,46 @@
+{% extends 'components/base.html' %}
+{% load staticfiles %}
+{% block encabezado %}
+	{{ fecha_actual }}
+
+{% endblock encabezado%}
+{% block contenido %}
+	<ul class="collapsible" data-collapsible="accordion">
+		{% for modulo in modulos %}
+			<li>
+		      	{% if modulo.funciona %}
+		      	<div class="collapsible-header green">
+		      		<i class="material-icons">thumb_up</i>
+		      	{% else %}
+		      	<div class="collapsible-header red">
+		      		<i class="material-icons">thumb_down</i>
+		      	{% endif %}
+		      	{{ modulo.nombre|upper }} | {{ modulo.horario_inicio }} - {{ modulo.horario_final }}
+		      </div>
+		      <div class="collapsible-body">
+			      <table class="responsive-table centered">
+			        <thead>
+			          <tr>
+			              <th>Funciona</th>
+			              <th>Horario</th>
+			              <th>Ubicación</th>
+			          </tr>
+			        </thead>
+
+			        <tbody>
+			          <tr>
+			          	{% if modulo.funciona %}
+			            	<td>SI</td>
+			            {% else %}
+			            	<td>NO</td>
+			            {% endif %}
+			            <td>De {{ modulo.horario_inicio }} a {{ modulo.horario_final }} horas</td>
+			            <td>{{ modulo.ubicacion }}</td>
+			          </tr>
+			        </tbody>
+			      </table>
+		      </div>
+		    </li>
+    	{% endfor %}
+  </ul>
+{% endblock contenido %}

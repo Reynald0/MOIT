@@ -1,3 +1,7 @@
+*.pyc
+__pycache__
+myenv
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
