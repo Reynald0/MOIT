@@ -57,3 +57,11 @@ footer .connect a.googleplus:hover {
 footer .connect a {
 	background: url(../images/icons.png) no-repeat;
 }
+
+.modal-content p{
+	color: black;
+}
+
+.modal-content h4{
+	color: black;
+}

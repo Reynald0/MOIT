@@ -10,12 +10,16 @@ def inicio(request):
 	modulos = Modulo.objects.all()
 	return render(request, 'inicio.html', {'fecha_actual': fecha_actual, 'modulos': modulos })
 
-
 def cambiar_modulo(request, nombre_modulo):
 	modulo = Modulo.objects.get(nombre=nombre_modulo) 
 	modulo.funciona = not modulo.funciona
 	modulo.save()
 	return redirect('inicio')
+
+def inicio_min(request):
+	fecha_actual = datetime.datetime.now() - datetime.timedelta(hours=5)
+	modulos = Modulo.objects.all()
+	return render(request, 'inicio_min.html', {'fecha_actual': fecha_actual, 'modulos': modulos })
 
 def login_persona(request):
     error = False

@@ -1,6 +1,7 @@
 *.pyc
 __pycache__
 myenv
+*.sqlite3
 
 # Windows image file caches
 Thumbs.db

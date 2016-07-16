@@ -1,0 +1,18 @@
+{% extends 'components/base.html' %}
+{% load staticfiles %}
+{% block encabezado %}
+	{{ fecha_actual }}
+{% endblock encabezado%}
+{% block contenido %}
+		{% for modulo in modulos %}
+				<b>
+					{% if modulo.funciona %}
+				    	<font color='green'>
+				    {% else %}
+				    	<font color='red'>
+				    {% endif %}
+				    {{ modulo.nombre }} | {{ modulo.horario_inicio }} - {{ modulo.horario_final }}<br>
+				</font>
+				</b>
+    	{% endfor %}
+{% endblock contenido %}

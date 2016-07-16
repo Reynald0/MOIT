@@ -5,4 +5,5 @@ $(document).ready(function(){
     belowOrigin: true, // Displays dropdown below the button
     hover: true, // Activate on hover
   });
+  $('.modal-trigger').leanModal(); // Open a mini window in the same page 
 });
