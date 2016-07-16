@@ -21,4 +21,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     #url(r'', include('modulos.urls')),
     url(r'^$', inicio, name='inicio'),
+    url(r'^login/$', login_persona, name='login_persona'),
+    url(r'^logout/$', logout_persona, name='logout_persona'),
 ]
