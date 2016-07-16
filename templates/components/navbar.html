@@ -4,8 +4,10 @@
         <a href="{% url 'inicio' %}" class="brand-logo center">Módulos de CTT</a>
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
+          {% include 'components/navbar_options.html' %}
         </ul>
         <ul class="side-nav light-blue darken-3" id="mobile-demo"> <!-- Navbar para dispositivos moviles -->
+          {% include 'components/navbar_options.html' %}
         </ul>
       </div>
     </nav>
