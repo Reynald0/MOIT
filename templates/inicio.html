@@ -40,7 +40,19 @@
 			          </tr>
 			        </tbody>
 			      </table>
-		      </div>
+			    {% if user.is_authenticated %} <!--Usuario logeado -->
+				<div class="row center-align">
+					<div class="col s12">
+						<a href="{% url 'cambiar_modulo' nombre_modulo=modulo.nombre %}"
+						{% if modulo.funciona %}
+							class="waves-effect waves-light btn red">No funciona</a>
+						{% else %}
+							class="waves-effect waves-light btn green">Si funciona</a>
+						{% endif %}
+					</div>
+				  </div>
+		      	</div>
+		      	{% endif %}
 		    </li>
     	{% endfor %}
   </ul>

@@ -11,6 +11,12 @@ def inicio(request):
 	return render(request, 'inicio.html', {'fecha_actual': fecha_actual, 'modulos': modulos })
 
 
+def cambiar_modulo(request, nombre_modulo):
+	modulo = Modulo.objects.get(nombre=nombre_modulo) 
+	modulo.funciona = not modulo.funciona
+	modulo.save()
+	return redirect('inicio')
+
 def login_persona(request):
     error = False
     if request.method == 'POST': #Si el formulario envia algo con el metodo POST
