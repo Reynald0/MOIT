@@ -2,21 +2,32 @@
 {% load staticfiles %}
 {% block encabezado %}
 	{{ fecha_actual }}
-
 {% endblock encabezado%}
 {% block contenido %}
 	<ul class="collapsible" data-collapsible="accordion">
 		{% for modulo in modulos %}
 			<li>
 		      	{% if modulo.funciona %}
-		      	<div class="collapsible-header green">
-		      		<i class="material-icons">thumb_up</i>
+		      		{% if hora_sistema >= modulo.horario_inicio.hour and  hora_sistema <= modulo.horario_final.hour %}
+		      			{% if hora_sistema == modulo.horario_inicio.hour and minuto_sistema <=  modulo.horario_inicio.minute %}
+		      				<div class="collapsible-header orange">
+		      				<i class="material-icons">error</i>
+		      			{% elif hora_sistema == modulo.horario_final.hour and minuto_sistema >=  modulo.horario_inicio.minute%}
+		      				<div class="collapsible-header orange">
+		      				<i class="material-icons">error</i>
+		      			{% else %}
+		      				<div class="collapsible-header green">
+		      				<i class="material-icons">thumb_up</i>
+		      			{% endif%}
+		      		{% else %}
+		      				<div class="collapsible-header orange">
+		      				<i class="material-icons">error</i>
+		      		{% endif %}
 		      	{% else %}
 		      	<div class="collapsible-header red">
 		      		<i class="material-icons">thumb_down</i>
 		      	{% endif %}
 		      	{{ modulo.nombre|upper }} 
-		      	<!-- | {{ modulo.horario_inicio }} - {{ modulo.horario_final }} -->
 		      </div>
 		      <div class="collapsible-body">
 			      <table class="responsive-table">

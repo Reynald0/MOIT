@@ -7,8 +7,10 @@ from django.contrib.auth import authenticate, login, logout
 
 def inicio(request):
 	fecha_actual = datetime.datetime.now() - datetime.timedelta(hours=5)
+	hora_sistema = fecha_actual.hour
+	minuto_sistema = fecha_actual.minute
 	modulos = Modulo.objects.all()
-	return render(request, 'inicio.html', {'fecha_actual': fecha_actual, 'modulos': modulos })
+	return render(request, 'inicio.html', {'fecha_actual': fecha_actual, 'hora_sistema': hora_sistema, 'minuto_sistema': minuto_sistema, 'modulos': modulos })
 
 def cambiar_modulo(request, nombre_modulo):
 	modulo = Modulo.objects.get(nombre=nombre_modulo) 
@@ -18,8 +20,10 @@ def cambiar_modulo(request, nombre_modulo):
 
 def inicio_min(request):
 	fecha_actual = datetime.datetime.now() - datetime.timedelta(hours=5)
+	hora_sistema = fecha_actual.hour
+	minuto_sistema = fecha_actual.minute
 	modulos = Modulo.objects.all()
-	return render(request, 'inicio_min.html', {'fecha_actual': fecha_actual, 'modulos': modulos })
+	return render(request, 'inicio_min.html', {'fecha_actual': fecha_actual, 'hora_sistema': hora_sistema, 'minuto_sistema': minuto_sistema, 'modulos': modulos })
 
 def login_persona(request):
     error = False
