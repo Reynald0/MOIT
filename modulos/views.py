@@ -1,15 +1,16 @@
+import datetime
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.utils import timezone
-import datetime
 from .models import Modulo
 from .forms import LogPersona
-from django.contrib.auth import authenticate, login, logout
+
+fecha_actual = datetime.datetime.now() - datetime.timedelta(hours=5)
+hora_sistema = fecha_actual.hour
+minuto_sistema = fecha_actual.minute
+modulos = Modulo.objects.all()
 
 def inicio(request):
-	fecha_actual = datetime.datetime.now() - datetime.timedelta(hours=5)
-	hora_sistema = fecha_actual.hour
-	minuto_sistema = fecha_actual.minute
-	modulos = Modulo.objects.all()
 	return render(request, 'inicio.html', {'fecha_actual': fecha_actual, 'hora_sistema': hora_sistema, 'minuto_sistema': minuto_sistema, 'modulos': modulos })
 
 def cambiar_modulo(request, nombre_modulo):
@@ -19,10 +20,6 @@ def cambiar_modulo(request, nombre_modulo):
 	return redirect('inicio')
 
 def inicio_min(request):
-	fecha_actual = datetime.datetime.now() - datetime.timedelta(hours=5)
-	hora_sistema = fecha_actual.hour
-	minuto_sistema = fecha_actual.minute
-	modulos = Modulo.objects.all()
 	return render(request, 'inicio_min.html', {'fecha_actual': fecha_actual, 'hora_sistema': hora_sistema, 'minuto_sistema': minuto_sistema, 'modulos': modulos })
 
 def login_persona(request):
