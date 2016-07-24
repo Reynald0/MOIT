@@ -1,14 +1,20 @@
 {% extends 'components/base.html' %}
 {% load staticfiles %}
 {% block encabezado %}
-	{{ fecha_actual }}
-{% endblock encabezado%}
+	{% now 'l' %} {{ fecha_actual }}
+{% endblock encabezado %}
 {% block contenido %}
 	<ul class="collapsible" data-collapsible="accordion">
 		{% for modulo in modulos %}
 			<li>
 		      	{% if modulo.funciona %}
-		      		{% if hora_sistema >= modulo.horario_inicio.hour and  hora_sistema <= modulo.horario_final.hour %}
+		      		{% if modulo.nombre == 'Azulejos' and dia == 'Monday' %}
+		      			<div class="collapsible-header orange">
+		      			<i class="material-icons">error</i>
+		      		{% elif modulo.nombre in modulos_cerrados and dia in dias_cerrados %}
+		      			<div class="collapsible-header orange">
+		      			<i class="material-icons">error</i>
+		      		{% elif hora_sistema >= modulo.horario_inicio.hour and  hora_sistema <= modulo.horario_final.hour %}
 		      			{% if hora_sistema == modulo.horario_inicio.hour and minuto_sistema <  modulo.horario_inicio.minute %}
 		      				<div class="collapsible-header orange">
 		      				<i class="material-icons">error</i>

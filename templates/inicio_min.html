@@ -1,13 +1,17 @@
 {% extends 'components/base.html' %}
 {% load staticfiles %}
 {% block encabezado %}
-	{{ fecha_actual }}
+	{% now 'l' %} {{ fecha_actual }}
 {% endblock encabezado%}
 {% block contenido %}
 		{% for modulo in modulos %}
 				<b>
 				{% if modulo.funciona %}
-					{% if hora_sistema >= modulo.horario_inicio.hour and  hora_sistema <= modulo.horario_final.hour %}
+					{% if modulo.nombre == 'Azulejos' and dia == 'Monday' %}
+		      			<font color='orange'>
+		      		{% elif modulo.nombre in modulos_cerrados and dia in dias_cerrados %}
+		      			<font color='orange'>
+					{% elif hora_sistema >= modulo.horario_inicio.hour and  hora_sistema <= modulo.horario_final.hour %}
 			      		{% if hora_sistema == modulo.horario_inicio.hour and minuto_sistema <=  modulo.horario_inicio.minute %}
 			      			<font color='orange'>
 			      		{% elif hora_sistema == modulo.horario_final.hour and minuto_sistema >=  modulo.horario_inicio.minute%}
