@@ -1,13 +1,15 @@
 {% extends 'components/base.html' %}
 {% load staticfiles %}
 {% block encabezado %}
-	{% now 'l' %} {{ fecha_actual }}
+	{{ dia_semana }} {{ fecha_actual }}
 {% endblock encabezado%}
 {% block contenido %}
 		{% for modulo in modulos %}
 				<b>
 				{% if modulo.funciona %}
 					{% if modulo.nombre == 'Azulejos' and dia == 'Monday' %}
+		      			<font color='orange'>
+		      		{% elif modulo.nombre == 'Ex-DGTIC (2)' and dia == 'Sunday'%}
 		      			<font color='orange'>
 		      		{% elif modulo.nombre in modulos_cerrados and dia in dias_cerrados %}
 		      			<font color='orange'>

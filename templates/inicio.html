@@ -1,7 +1,7 @@
 {% extends 'components/base.html' %}
 {% load staticfiles %}
 {% block encabezado %}
-	{% now 'l' %} {{ fecha_actual }}
+	{{ dia_semana }} {{ fecha_actual }}
 {% endblock encabezado %}
 {% block contenido %}
 	<ul class="collapsible" data-collapsible="accordion">
@@ -9,6 +9,9 @@
 			<li>
 		      	{% if modulo.funciona %}
 		      		{% if modulo.nombre == 'Azulejos' and dia == 'Monday' %}
+		      			<div class="collapsible-header orange">
+		      			<i class="material-icons">error</i>
+		      		{% elif modulo.nombre == 'Ex-DGTIC (2)' and dia == 'Sunday' %}
 		      			<div class="collapsible-header orange">
 		      			<i class="material-icons">error</i>
 		      		{% elif modulo.nombre in modulos_cerrados and dia in dias_cerrados %}

@@ -5,18 +5,21 @@ from django.utils import timezone
 from .models import Modulo
 from .forms import LogPersona
 
-modulos_cerrados = ['Oficinas CTT', 'Palacio Municipal', 'Base 4', 'Plantel 2', 'Plantel 28', 'UJAT Central', 'UJAT DACS']
-dias_cerrados = ['Saturday', 'Sunday'] 
+modulos_cerrados = ['Oficinas CTT (3)', 'Palacio Municipal', 'Base 4 (2)', 'Plantel 2', 'Plantel 28', 'UJAT Central', 'UJAT DACS']
+dias_cerrados = ['Saturday', 'Sunday']
+dias_semana = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb']
 
 def inicio(request):
     fecha_actual = datetime.datetime.now() - datetime.timedelta(hours=5)
     dia_sistema = fecha_actual.strftime("%A")
+    dia_semana = dias_semana[int(fecha_actual.strftime("%w"))]
     hora_sistema = fecha_actual.hour
     minuto_sistema = fecha_actual.minute
     modulos = Modulo.objects.all()
     return render(request, 'inicio.html', 
         {'fecha_actual': fecha_actual, 
         'dia' : dia_sistema ,
+        'dia_semana': dia_semana,
         'hora_sistema': hora_sistema, 
         'minuto_sistema': minuto_sistema, 
         'modulos': modulos,
@@ -32,12 +35,14 @@ def cambiar_modulo(request, nombre_modulo):
 def inicio_min(request):
     fecha_actual = datetime.datetime.now() - datetime.timedelta(hours=5)
     dia_sistema = fecha_actual.strftime("%A")
+    dia_semana = dias_semana[int(fecha_actual.strftime("%w"))]
     hora_sistema = fecha_actual.hour
     minuto_sistema = fecha_actual.minute
     modulos = Modulo.objects.all()
     return render(request, 'inicio_min.html', 
         {'fecha_actual': fecha_actual, 
         'dia' : dia_sistema ,
+        'dia_semana': dia_semana,
         'hora_sistema': hora_sistema, 
         'minuto_sistema': minuto_sistema, 
         'modulos': modulos,
