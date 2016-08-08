@@ -9,6 +9,17 @@ modulos_cerrados = ['Oficinas CTT (3)', 'Palacio Municipal', 'Base 4 (2)', 'Plan
 dias_cerrados = ['Saturday', 'Sunday']
 dias_semana = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb']
 
+
+def ajustar_horario(Pmodulos, pDia_Sistema):
+    for modulo in Pmodulos:
+        if modulo.nombre == 'Planeta Papel' and pDia_Sistema == 'Saturday':
+            modulo.horario_final = datetime.datetime.strptime('18:00:00', '%H:%M:%S').time()
+        elif modulo.nombre == 'Planeta Papel' and pDia_Sistema == 'Sunday':
+            modulo.horario_inicio = datetime.datetime.strptime('10:00:00', '%H:%M:%S').time()
+            modulo.horario_final = datetime.datetime.strptime('18:00:00', '%H:%M:%S').time()
+        elif modulo.nombre == 'Ex-DGTIC (2)' and pDia_Sistema == 'Saturday':
+            modulo.horario_final = datetime.datetime.strptime('14:00:00', '%H:%M:%S').time()
+
 def inicio(request):
     fecha_actual = datetime.datetime.now() - datetime.timedelta(hours=5)
     dia_sistema = fecha_actual.strftime("%A")
@@ -16,6 +27,7 @@ def inicio(request):
     hora_sistema = fecha_actual.hour
     minuto_sistema = fecha_actual.minute
     modulos = Modulo.objects.all()
+    ajustar_horario(modulos, dia_sistema)
     return render(request, 'inicio.html', 
         {'fecha_actual': fecha_actual, 
         'dia' : dia_sistema ,
@@ -39,6 +51,7 @@ def inicio_min(request):
     hora_sistema = fecha_actual.hour
     minuto_sistema = fecha_actual.minute
     modulos = Modulo.objects.all()
+    ajustar_horario(modulos, dia_sistema)
     return render(request, 'inicio_min.html', 
         {'fecha_actual': fecha_actual, 
         'dia' : dia_sistema ,
