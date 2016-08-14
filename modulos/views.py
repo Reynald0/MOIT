@@ -1,9 +1,9 @@
 import datetime
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from .models import Modulo
-from .forms import LogPersona
+from .forms import LogPersona, ModuloForm
 
 modulos_cerrados = ['Oficinas CTT (3)', 'Palacio Municipal', 'Base 4 (2)', 'Plantel 2', 'Plantel 28', 'UJAT Central', 'UJAT DACS']
 dias_cerrados = ['Saturday', 'Sunday']
@@ -43,6 +43,18 @@ def cambiar_modulo(request, nombre_modulo):
 	modulo.funciona = not modulo.funciona
 	modulo.save()
 	return redirect('inicio')
+
+def editar_modulo(request, pk_modulo):
+    modulo = get_object_or_404(Modulo, pk=pk_modulo)
+    if request.method == 'POST':
+        form = ModuloForm(request.POST, instance=modulo)
+        if form.is_valid():
+            modulo = form.save(commit=False)
+            modulo.save()
+            return redirect('modulos.views.inicio')
+    else:
+        form = ModuloForm(instance=modulo)
+        return render(request, 'editar_modulo.html', {'form': form})
 
 def inicio_min(request):
     fecha_actual = datetime.datetime.now() - datetime.timedelta(hours=5)

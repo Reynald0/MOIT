@@ -1,0 +1,23 @@
+{% extends 'components/base.html' %}
+{% load staticfiles %}
+{% block encabezado %}
+<form method="POST" class="col s12" enctype="multipart/form-data" role="form" data-toggle="validator">
+  <fieldset>
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  {% for elemento in form %}
+    <div class="row">
+      <div class="input-field col s12">
+          {{ elemento }}
+          <label for="{{ elemento.label }}" data-error="Incorrecto" data-success="Correcto!">{{ elemento.label }}</label>
+      </div>
+    </div>
+  {% endfor %}
+  <div class="row">
+    <button type="submit" class="save btn btn-default">Guardar</button>
+  </div>
+  </fieldset>
+</form>
+{% endblock encabezado %}
+{% block contenido %}
+{% endblock contenido %}

@@ -21,7 +21,7 @@
 		      			{% if hora_sistema == modulo.horario_inicio.hour and minuto_sistema <  modulo.horario_inicio.minute %}
 		      				<div class="collapsible-header orange">
 		      				<i class="material-icons">error</i>
-		      			{% elif hora_sistema == modulo.horario_final.hour and minuto_sistema >=  modulo.horario_inicio.minute %}
+		      			{% elif hora_sistema == modulo.horario_final.hour and minuto_sistema >=  modulo.horario_final.minute %}
 		      				<div class="collapsible-header orange">
 		      				<i class="material-icons">error</i>
 		      			{% else %}
@@ -69,6 +69,11 @@
 						{% else %}
 							class="waves-effect waves-light btn green">Si funciona</a>
 						{% endif %}
+					</div>
+				  </div>
+				  <div class="row center-align">
+					<div class="col s12">
+						<a href="{% url 'editar_modulo' pk_modulo=modulo.pk %}"	class="waves-effect waves-light btn blue">Editar</a>
 					</div>
 				  </div>
 		      	</div>

@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^login/$', login_persona, name='login_persona'),
     url(r'^logout/$', logout_persona, name='logout_persona'),
     url(r'^cambiar_modulo/(?P<nombre_modulo>.+)/$', cambiar_modulo, name='cambiar_modulo'),
+    url(r'^editar_modulo/(?P<pk_modulo>[0-9]{1,2})/$', editar_modulo, name='editar_modulo'),
 ]
