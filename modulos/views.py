@@ -5,7 +5,7 @@ from django.utils import timezone
 from .models import Modulo
 from .forms import LogPersona, ModuloForm
 
-modulos_cerrados = ['Oficinas CTT (3)', 'Palacio Municipal', 'Base 4 (2)', 'Plantel 2', 'Plantel 28', 'UJAT Central', 'UJAT DACS']
+modulos_cerrados = ['Oficinas CTT (10)', 'Palacio Municipal', 'Base 4 (2)', 'Plantel 2', 'Plantel 28', 'UJAT Central', 'UJAT DACS']
 dias_cerrados = ['Saturday', 'Sunday']
 dias_semana = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb']
 
