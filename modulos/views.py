@@ -1,14 +1,23 @@
 import datetime
+from django.contrib.admin.models import LogEntry
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-from .models import Modulo
+from .models import Modulo, Modulo_Log
 from .forms import LogPersona, ModuloForm
+
 
 modulos_cerrados = ['Oficinas CTT (10)', 'Palacio Municipal', 'Base 4 (2)', 'Plantel 2', 'Plantel 28', 'UJAT Central', 'UJAT DACS']
 dias_cerrados = ['Saturday', 'Sunday']
 dias_semana = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb']
 
+
+def registrar_cambio(pUsuario, pModulo):
+    movimiento = Modulo_Log()
+    movimiento.usuario = pUsuario
+    #movimiento.fecha_hora = timezone.now() #Esta linea no es necesaria ya que en el models.py se define el Objeto Modulo_Log como auto_now=True
+    movimiento.modulo = pModulo
+    movimiento.save()
 
 def ajustar_horario(Pmodulos, pDia_Sistema):
     for modulo in Pmodulos:
@@ -39,18 +48,21 @@ def inicio(request):
         'modulos_cerrados' : modulos_cerrados})
 
 def cambiar_modulo(request, nombre_modulo):
-	modulo = Modulo.objects.get(nombre=nombre_modulo) 
-	modulo.funciona = not modulo.funciona
-	modulo.save()
-	return redirect('inicio')
+    modulo = Modulo.objects.get(nombre=nombre_modulo) 
+    modulo.funciona = not modulo.funciona
+    modulo.save()
+    registrar_cambio(request.user, modulo)
+    return redirect('inicio')
 
 def editar_modulo(request, pk_modulo):
+    usuario = request.user
     modulo = get_object_or_404(Modulo, pk=pk_modulo)
     if request.method == 'POST':
         form = ModuloForm(request.POST, instance=modulo)
         if form.is_valid():
             modulo = form.save(commit=False)
             modulo.save()
+            registrar_cambio(request.user, modulo)
             return redirect('modulos.views.inicio')
     else:
         form = ModuloForm(instance=modulo)
@@ -111,3 +123,7 @@ def logout_persona(request): #Se define la funcion logout_persona el cual es el 
     logout(request) #Se usa el metodo logout() que recibe el request
     # Regresa la vista inicio y como inicio necesita request, entonces se le pasa el request de log_persona
     return redirect('inicio')
+
+def modulos_log(request):
+    movimientos = Modulo_Log.objects.filter(fecha_hora__lte=timezone.now()).order_by('-fecha_hora')[0:9] #Primeros 10 registros
+    return render(request, 'modulos_log.html', {'movimientos': movimientos})

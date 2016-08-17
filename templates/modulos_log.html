@@ -1,0 +1,25 @@
+{% extends 'components/base.html' %}
+{% load staticfiles %}
+{% block encabezado %}
+	{{ dia_semana }} {{ fecha_actual }}
+{% endblock encabezado %}
+{% block contenido %}
+	<table class="responsive-table">
+		<thead>
+			<tr>
+				<th>Usuario</th>
+				<th>Fecha y Hora</th>
+				<th>Módulo</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for movimiento in movimientos %}
+			<tr>
+			    <td> {{ movimiento.usuario }} </td>
+			    <td> {{ movimiento.fecha_hora|date:"j/n/Y G:i:s"}} </td>
+			    <td> {{ movimiento.modulo }} </td>
+			</tr>
+    	{% endfor %}
+    	</tbody>
+    </table>
+{% endblock contenido %}

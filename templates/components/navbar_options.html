@@ -1,10 +1,17 @@
           {% if user.is_authenticated %} <!--Usuario logeado -->
             <li>
-            <a href="{% url 'logout_persona' %}">
+              <a href="{% url 'logout_persona' %}">
                 <i class="material-icons right">power_settings_new</i>
                 Salir
               </a>
+            </li>
+            <li>
+              <a href="{% url 'modulos_log' %}">
+                <i class="material-icons right">schedule</i>
+                Lista de cambios
+              </a>
             </li>  <!--Usuario logeado -->
+            
           {% else %} <!--Usuario no logueado -->
             <!--li>
               <a href="{% url 'login_persona' %}">
