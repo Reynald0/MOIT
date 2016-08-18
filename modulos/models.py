@@ -34,8 +34,8 @@ class Modulo_Cerrado(models.Model):
 	dia = models.CharField(max_length=10, choices=DIAS_SEMANA)
 	modulo = models.ForeignKey(Modulo, on_delete= models.CASCADE)
 
-    class Meta:
-        unique_together = (("dia", "modulo"),)
+	class Meta:
+		unique_together = (("dia", "modulo"),)
 
 	def __str__(self):
 		return ('Modulo ' + self.modulo.nombre + ' cerrado en ' + self.dia)
