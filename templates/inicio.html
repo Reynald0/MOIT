@@ -8,13 +8,7 @@
 		{% for modulo in modulos %}
 			<li>
 		      	{% if modulo.funciona %}
-		      		{% if modulo.nombre == 'Azulejos' and dia == 'Monday' %}
-		      			<div class="collapsible-header orange">
-		      			<i class="material-icons">error</i>
-		      		{% elif modulo.nombre == 'Ex-DGTIC (2)' and dia == 'Sunday' %}
-		      			<div class="collapsible-header orange">
-		      			<i class="material-icons">error</i>
-		      		{% elif modulo.nombre in modulos_cerrados and dia in dias_cerrados %}
+		      		{% if modulo.nombre in modulos_cerrados %}
 		      			<div class="collapsible-header orange">
 		      			<i class="material-icons">error</i>
 		      		{% elif hora_sistema >= modulo.horario_inicio.hour and  hora_sistema <= modulo.horario_final.hour %}

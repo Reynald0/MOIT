@@ -1,16 +1,26 @@
 import datetime
 from django.contrib.admin.models import LogEntry
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-from .models import Modulo, Modulo_Log
+from .models import Modulo, Modulo_Log, Modulo_Cerrado
 from .forms import LogPersona, ModuloForm
 
-
-modulos_cerrados = ['Oficinas CTT (10)', 'Palacio Municipal', 'Base 4 (2)', 'Plantel 2', 'Plantel 28', 'UJAT Central', 'UJAT DACS']
-dias_cerrados = ['Saturday', 'Sunday']
 dias_semana = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb']
 
+
+def consultar_fecha():
+    # Fecha y hora en UTC -5, por eso se le restan cinco horas, es la Time Zone de México
+    fecha_actual = datetime.datetime.now() - datetime.timedelta(hours=5)
+    return fecha_actual
+
+def ajustar_dia(pDia_Sistema):
+    modulos = Modulo_Cerrado.objects.filter(dia=pDia_Sistema)
+    modulos_cerrados = []
+    for modulo in modulos:
+        modulos_cerrados.append(modulo.modulo.nombre)
+    return modulos_cerrados
 
 def registrar_cambio(pUsuario, pModulo):
     movimiento = Modulo_Log()
@@ -28,14 +38,19 @@ def ajustar_horario(Pmodulos, pDia_Sistema):
             modulo.horario_final = datetime.datetime.strptime('18:00:00', '%H:%M:%S').time()
         elif modulo.nombre == 'Ex-DGTIC (2)' and pDia_Sistema == 'Saturday':
             modulo.horario_final = datetime.datetime.strptime('14:00:00', '%H:%M:%S').time()
+        elif modulo.nombre == 'Base 4' and pDia_Sistema == 'Saturday':
+            modulo.horario_inicio = datetime.datetime.strptime('09:00:00', '%H:%M:%S').time()
+            modulo.horario_final = datetime.datetime.strptime('13:00:00', '%H:%M:%S').time()
+
 
 def inicio(request):
-    fecha_actual = datetime.datetime.now() - datetime.timedelta(hours=5)
+    fecha_actual = consultar_fecha()
     dia_sistema = fecha_actual.strftime("%A")
     dia_semana = dias_semana[int(fecha_actual.strftime("%w"))]
     hora_sistema = fecha_actual.hour
     minuto_sistema = fecha_actual.minute
     modulos = Modulo.objects.all()
+    modulos_cerrados = ajustar_dia(dia_sistema)
     ajustar_horario(modulos, dia_sistema)
     return render(request, 'inicio.html', 
         {'fecha_actual': fecha_actual, 
@@ -44,9 +59,9 @@ def inicio(request):
         'hora_sistema': hora_sistema, 
         'minuto_sistema': minuto_sistema, 
         'modulos': modulos,
-        'dias_cerrados' : dias_cerrados,
         'modulos_cerrados' : modulos_cerrados})
 
+@login_required
 def cambiar_modulo(request, nombre_modulo):
     modulo = Modulo.objects.get(nombre=nombre_modulo) 
     modulo.funciona = not modulo.funciona
@@ -54,6 +69,7 @@ def cambiar_modulo(request, nombre_modulo):
     registrar_cambio(request.user, modulo)
     return redirect('inicio')
 
+@login_required
 def editar_modulo(request, pk_modulo):
     usuario = request.user
     modulo = get_object_or_404(Modulo, pk=pk_modulo)
@@ -69,12 +85,13 @@ def editar_modulo(request, pk_modulo):
         return render(request, 'editar_modulo.html', {'form': form})
 
 def inicio_min(request):
-    fecha_actual = datetime.datetime.now() - datetime.timedelta(hours=5)
+    fecha_actual = consultar_fecha()
     dia_sistema = fecha_actual.strftime("%A")
     dia_semana = dias_semana[int(fecha_actual.strftime("%w"))]
     hora_sistema = fecha_actual.hour
     minuto_sistema = fecha_actual.minute
     modulos = Modulo.objects.all()
+    modulos_cerrados = ajustar_dia(dia_sistema)
     ajustar_horario(modulos, dia_sistema)
     return render(request, 'inicio_min.html', 
         {'fecha_actual': fecha_actual, 
@@ -83,7 +100,6 @@ def inicio_min(request):
         'hora_sistema': hora_sistema, 
         'minuto_sistema': minuto_sistema, 
         'modulos': modulos,
-        'dias_cerrados' : dias_cerrados,
         'modulos_cerrados' : modulos_cerrados})
 
 def login_persona(request):
@@ -124,6 +140,7 @@ def logout_persona(request): #Se define la funcion logout_persona el cual es el 
     # Regresa la vista inicio y como inicio necesita request, entonces se le pasa el request de log_persona
     return redirect('inicio')
 
+@login_required
 def modulos_log(request):
     movimientos = Modulo_Log.objects.filter(fecha_hora__lte=timezone.now()).order_by('-fecha_hora')[0:9] #Primeros 10 registros
     return render(request, 'modulos_log.html', {'movimientos': movimientos})

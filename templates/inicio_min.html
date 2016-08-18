@@ -7,11 +7,7 @@
 		{% for modulo in modulos %}
 				<b>
 				{% if modulo.funciona %}
-					{% if modulo.nombre == 'Azulejos' and dia == 'Monday' %}
-		      			<font color='orange'>
-		      		{% elif modulo.nombre == 'Ex-DGTIC (2)' and dia == 'Sunday'%}
-		      			<font color='orange'>
-		      		{% elif modulo.nombre in modulos_cerrados and dia in dias_cerrados %}
+		      		{% if modulo.nombre in modulos_cerrados%}
 		      			<font color='orange'>
 					{% elif hora_sistema >= modulo.horario_inicio.hour and  hora_sistema <= modulo.horario_final.hour %}
 			      		{% if hora_sistema == modulo.horario_inicio.hour and minuto_sistema <=  modulo.horario_inicio.minute %}

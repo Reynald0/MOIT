@@ -19,3 +19,20 @@ class Modulo_Log(models.Model):
 
 	def __str__(self):
 		return (self.usuario.username + ' modifica ' + self.modulo.nombre + ' el ' + self.fecha_hora.strftime('%c'))
+
+class Modulo_Cerrado(models.Model):
+	# Importante dejar los nombres en ingles, ya que la consulta se hace con el filtro del nombre del dia en ingles
+	DIAS_SEMANA = (
+    ('Monday', 'Lunes'),
+    ('Tuesday', 'Martes'),
+    ('Wednesday', 'Miércoles'),
+    ('Thursday', 'Jueves'),
+    ('Friday', 'Viernes'),
+    ('Saturday', 'Sábado'),
+    ('Sunday', 'Domingo'),
+	)
+	dia = models.CharField(max_length=10, choices=DIAS_SEMANA)
+	modulo = models.ForeignKey(Modulo, on_delete= models.CASCADE)
+
+	def __str__(self):
+		return ('Modulo ' + self.modulo.nombre + ' cerrado en ' + self.dia)
