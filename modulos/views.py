@@ -161,7 +161,6 @@ def lista_modulos_cerrados(request):
 
 @login_required
 def agregar_modulo_cerrado(request):
-    error = False
     if request.method == 'POST':
         form = ModuloCerradoForm(request.POST)
         if form.is_valid():
@@ -176,12 +175,8 @@ def agregar_modulo_cerrado(request):
 @login_required
 def editar_modulo_cerrado(request, pk_modulo_cerrado):
     modulo = get_object_or_404(Modulo_Cerrado, pk=pk_modulo_cerrado)
-    if request.method == 'POST':
-        form = ModuloCerradoForm(request.POST, instance=modulo)
-        if form.is_valid():
-            modulo = form.save(commit=False)
-            modulo.save()
-            return redirect('lista_modulos_cerrados')
+    form = ModuloCerradoForm(instance=modulo)
+    return render(request, 'editar_modulo_cerrado.html', {'form': form})
 
 @login_required
 def borrar_modulo_cerrado(request, pk_modulo_cerrado):
