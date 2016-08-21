@@ -1,0 +1,26 @@
+{% extends 'components/base.html' %}
+{% load staticfiles %}
+{% block contenido %}
+	<div class="row center-align">
+		<div class="col s12">
+			<a href="{% url 'agregar_modulo_cerrado' %}" class="waves-effect waves-light btn-large center-align"><i class="material-icons left">library_add</i>Agregar</a>
+		</div>
+	</div>
+	<ul class="collection with-header">
+	{% for dia_modulo in dias_modulos %}
+		<li class="collection-header"><h4>{{ dia_modulo.0.dia }}</h4></li>
+		{% for mod in dia_modulo %}
+			<li class="collection-item">
+				<div>{{ mod.modulo.nombre }}
+					<a href="{% url 'editar_modulo_cerrado' pk_modulo_cerrado=mod.pk %}" class="secondary-content">
+						<i class="material-icons">mode_edit</i>
+					</a>
+					<a href="{% url 'borrar_modulo_cerrado' pk_modulo_cerrado=mod.pk %}" class="secondary-content">
+						<i class="material-icons">delete</i>
+					</a>
+				</div>
+			</li>
+		{% endfor %}
+	{% endfor %}
+	</ul>
+{% endblock contenido %}

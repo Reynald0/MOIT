@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from .models import Modulo, Modulo_Log, Modulo_Cerrado
-from .forms import LogPersona, ModuloForm
+from .forms import LogPersona, ModuloForm, ModuloCerradoForm
 
 dias_semana = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb']
 
@@ -144,3 +144,47 @@ def logout_persona(request): #Se define la funcion logout_persona el cual es el 
 def modulos_log(request):
     movimientos = Modulo_Log.objects.filter(fecha_hora__lte=timezone.now()).order_by('-fecha_hora')[0:9] #Primeros 10 registros
     return render(request, 'modulos_log.html', {'movimientos': movimientos})
+
+@login_required
+def lista_modulos_cerrados(request):
+    dias_modulos = []
+    dias_semana = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    dias_semana_es = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+    for dia in dias_semana:
+        modulos_cerrados = Modulo_Cerrado.objects.filter(dia=dia)
+        if modulos_cerrados:
+            dias_modulos.append(modulos_cerrados)
+    # Indice 0 es el Lunes, 1 es el Martes.....
+    return render(request, 'lista_modulos_cerrados.html', 
+        {'dias_modulos': dias_modulos, 
+        'dias_semana_es' : dias_semana_es})
+
+@login_required
+def agregar_modulo_cerrado(request):
+    error = False
+    if request.method == 'POST':
+        form = ModuloCerradoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_modulos_cerrados')
+        else:
+            return render(request, 'agregar_modulo_cerrado.html', {'form' : form })
+    else:
+        form = ModuloCerradoForm()
+        return render(request, 'agregar_modulo_cerrado.html', {'form' : form })
+
+@login_required
+def editar_modulo_cerrado(request, pk_modulo_cerrado):
+    modulo = get_object_or_404(Modulo_Cerrado, pk=pk_modulo_cerrado)
+    if request.method == 'POST':
+        form = ModuloCerradoForm(request.POST, instance=modulo)
+        if form.is_valid():
+            modulo = form.save(commit=False)
+            modulo.save()
+            return redirect('lista_modulos_cerrados')
+
+@login_required
+def borrar_modulo_cerrado(request, pk_modulo_cerrado):
+    modulo_cerrado = get_object_or_404(Modulo_Cerrado, pk=pk_modulo_cerrado)
+    modulo_cerrado.delete()
+    return redirect('lista_modulos_cerrados')

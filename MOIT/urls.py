@@ -26,6 +26,10 @@ urlpatterns = [
     url(r'^cambiar_modulo/(?P<nombre_modulo>.+)/$', cambiar_modulo, name='cambiar_modulo'),
     url(r'^editar_modulo/(?P<pk_modulo>[0-9]{1,2})/$', editar_modulo, name='editar_modulo'),
     url(r'^modulos_log/$', modulos_log, name='modulos_log'),
+    url(r'^lista_modulos_cerrados/$', lista_modulos_cerrados, name='lista_modulos_cerrados'),
+    url(r'^agregar_modulo_cerrado/$', agregar_modulo_cerrado, name='agregar_modulo_cerrado'),
+    url(r'^editar_modulo_cerrado/(?P<pk_modulo_cerrado>[0-9]{1,2})/$', editar_modulo_cerrado, name='editar_modulo_cerrado'),
+    url(r'^borrar_modulo_cerrado/(?P<pk_modulo_cerrado>[0-9]{1,2})/$', borrar_modulo_cerrado, name='borrar_modulo_cerrado'),
 ]
 
 admin.site.site_header = 'Administracion de MOIT'
