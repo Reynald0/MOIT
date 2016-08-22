@@ -15,9 +15,11 @@
       <div class="input-field col s12">
           {{ elemento }}
           <label for="{{ elemento.label }}" data-error="Incorrecto" data-success="Correcto!">{{ elemento.label }}</label>
+          <br><br>
       </div>
     </div>
   {% endfor %}
+  <br><br>
   <div class="row">
     <button type="submit" class="save btn btn-default">Guardar</button>
   </div>
