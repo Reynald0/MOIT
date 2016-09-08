@@ -52,7 +52,7 @@ def inicio(request):
     modulos = Modulo.objects.all()
     modulos_cerrados = ajustar_dia(dia_sistema)
     ajustar_horario(modulos, dia_sistema)
-    return render(request, 'no_modulos.html', 
+    return render(request, 'inicio.html', 
         {'fecha_actual': fecha_actual, 
         'dia' : dia_sistema ,
         'dia_semana': dia_semana,
@@ -93,7 +93,7 @@ def inicio_min(request):
     modulos = Modulo.objects.all()
     modulos_cerrados = ajustar_dia(dia_sistema)
     ajustar_horario(modulos, dia_sistema)
-    return render(request, 'no_modulos.html', 
+    return render(request, 'inicio_min.html', 
         {'fecha_actual': fecha_actual, 
         'dia' : dia_sistema ,
         'dia_semana': dia_semana,
